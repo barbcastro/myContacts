@@ -1,3 +1,9 @@
+import PageHeader from '../../Components/PageHeader';
+
 export default function NewContact() {
-  return 'NewContactpage';
+  return (
+    <PageHeader
+      title="Novo Contato"
+    />
+  );
 }

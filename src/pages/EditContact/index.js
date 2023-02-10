@@ -1,3 +1,9 @@
+import PageHeader from '../../Components/PageHeader';
+
 export default function EditContact() {
-  return 'EditContactpage';
+  return (
+    <PageHeader
+      title="Editar Barbara Castro"
+    />
+  );
 }
