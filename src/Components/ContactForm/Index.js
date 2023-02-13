@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import isEmailValid from '../../utils/isEmailValid';
+import formatFone from '../../utils/formatPhone';
 import useErrors from '../../assets/hooks/useErrors';
 
 import { Form, ButtonContainer } from './styled';
@@ -39,6 +40,10 @@ export default function ContactForm({ buttonLabel }) {
     }
   }
 
+  function handlePhoneChange(event) {
+    setFone(formatFone(event.target.value));
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -48,7 +53,7 @@ export default function ContactForm({ buttonLabel }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFielName('name')}>
         <Input
           error={getErrorMessageByFielName('name')}
@@ -60,6 +65,7 @@ export default function ContactForm({ buttonLabel }) {
 
       <FormGroup error={getErrorMessageByFielName('email')}>
         <Input
+          type="email"
           error={getErrorMessageByFielName('email')}
           placeholder="E-mail"
           value={email}
@@ -71,7 +77,8 @@ export default function ContactForm({ buttonLabel }) {
         <Input
           placeholder="Telefone"
           value={phone}
-          onChange={(event) => setFone(event.target.value)}
+          onChange={handlePhoneChange}
+          maxLength="15"
         />
       </FormGroup>
 
@@ -81,7 +88,7 @@ export default function ContactForm({ buttonLabel }) {
           onChange={(event) => setCategory(event.target.value)}
         >
           <option value="">Categoria</option>
-          <option value="instagram">Instragram</option>
+          <option value="instagram">Instagram</option>
           <option value="discord">Discord</option>
         </Select>
       </FormGroup>
