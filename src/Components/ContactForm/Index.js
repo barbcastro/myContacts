@@ -1,35 +1,31 @@
 import PropTypes from 'prop-types';
-
 import { useState } from 'react';
+
+import isEmailValid from '../../utils/isEmailValid';
+import useErrors from '../../assets/hooks/useErrors';
+
 import { Form, ButtonContainer } from './styled';
 
 import FormGroup from '../FormGroup';
 import Input from '../Input';
 import Select from '../Select';
 import Button from '../Button';
-import isEmailValid from '../../utils/isEmailValid';
 
 export default function ContactForm({ buttonLabel }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setFone] = useState('');
   const [category, setCategory] = useState('');
-  const [errors, setErrors] = useState([]);
 
-  console.log(errors);
+  const { setError, removeError, getErrorMessageByFielName } = useErrors();
 
   function handleNameChange(event) {
     setName(event.target.value);
 
     if (!event.target.value) {
-      setErrors((prevState) => [
-        ...prevState,
-        { field: 'name', message: 'Nome é obrigatório' },
-      ]);
+      setError({ field: 'name', message: 'Nome é obrigatório' });
     } else {
-      setErrors((prevState) => prevState.filter(
-        (error) => error.filter !== 'name',
-      ));
+      removeError('name');
     }
   }
 
@@ -37,14 +33,9 @@ export default function ContactForm({ buttonLabel }) {
     setEmail(event.target.value);
 
     if (!event.target.value && !isEmailValid(event.target.value)) {
-      setErrors((prevState) => [
-        ...prevState,
-        { field: 'email', message: 'E-mail inválido' },
-      ]);
+      setError({ field: 'email', message: 'E-mail inválido' });
     } else {
-      setErrors((prevState) => prevState.filter(
-        (error) => error.filter !== 'email',
-      ));
+      removeError('email');
     }
   }
 
@@ -58,16 +49,18 @@ export default function ContactForm({ buttonLabel }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFielName('name')}>
         <Input
+          error={getErrorMessageByFielName('name')}
           placeholder="Nome"
           value={name}
           onChange={handleNameChange}
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFielName('email')}>
         <Input
+          error={getErrorMessageByFielName('email')}
           placeholder="E-mail"
           value={email}
           onChange={handleEmailChange}
